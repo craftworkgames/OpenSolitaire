@@ -1,21 +1,21 @@
 ###Source Code: 
-[Copyright (c) 2016 HathorsLove.com](http://www.gnu.org/licenses/gpl-3.0.html)
+**OpenSolitaire** (game logic) - [Copyright (c) 2016 HathorsLove.com](http://www.gnu.org/licenses/gpl-3.0.html) (GPL-3)
 
-####MonoGame:
-[Copyright (c) 2016 The MonoGame Team](https://github.com/mono/MonoGame/blob/develop/LICENSE.txt)
+**MonoGame.Ruge** (playing card engine) - [Copyright (c) 2016 MetaSmug](https://github.com/MetaSmug/RollYourOwnGameEngine/blob/master/LICENSE.md) (MIT)
 
-####Empty Keys:
-[Copyright (c) 2014 Empty Keys, Filip Dušek](http://www.emptykeys.com)
+**MonoGame** (distribution framework) - [Copyright (c) 2016 The MonoGame Team](https://github.com/mono/MonoGame/blob/develop/LICENSE.txt) (MS-PL)
 
-[Copyright (c) 2015 Microsoft](https://github.com/Microsoft/XamlBehaviors)
+###Graphics:
 
-###Card PNG Assets:
+####Branding Logo:
+Copyright (c) 2016 MetaSmug, all rights reserved.  If you're not submitting Pull Requests to [this repo](https://github.com/SoundGoddess/OpenSolitaire/) then please remove before distributing your game.
+
+####Card PNG Assets:
 Public Domain ([OpenGameArt.org](http://opengameart.org/content/playing-cards-vector-png))
 
-###Audio Assets:
-Public Domain (mostly from [sonniss.com](sonniss.com))
+CC BY-SA 3.0 ([Cburnett](http://en.wikipedia.org/wiki/User:Cburnett))
 
-###Music: 
+###Audio and Music: 
 
 [**Attribution-NonCommercial 4.0 International**](http://creativecommons.org/licenses/by-nc/4.0/)
 
