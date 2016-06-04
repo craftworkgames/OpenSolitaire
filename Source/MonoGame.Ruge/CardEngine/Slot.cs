@@ -21,19 +21,19 @@ namespace MonoGame.Ruge.CardEngine {
 
         public Rectangle Border => new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height);
 
-        public string name { get; set; } = "Slot";
+        public string Name { get; set; } = "Slot";
 
         public bool IsDraggable { get; set; }
         public int ZIndex { get; set; } = -1;
         public Texture2D Texture { get; set; }
 
-        public Stack stack { get; set; }
+        public Stack Stack { get; set; }
 
-        private readonly SpriteBatch spriteBatch;
+        private readonly SpriteBatch _spriteBatch;
 
         public Slot(Texture2D slotTex, SpriteBatch spriteBatch) {
 
-            this.spriteBatch = spriteBatch;
+            _spriteBatch = spriteBatch;
             Texture = slotTex;
             
         }
@@ -47,24 +47,24 @@ namespace MonoGame.Ruge.CardEngine {
         public void OnDeselected() {}
         public void OnCollusion(IDragonDropItem item) { }
 
-        private bool lastMouseOver = false;
+        private bool _lastMouseOver = false;
 
         public void Update(GameTime gameTime) {
 
 
-            if (lastMouseOver != IsMouseOver) {
+            if (_lastMouseOver != IsMouseOver) {
 
                 string mouseOver = IsMouseOver ? "enter" : "exit";
   //              Console.WriteLine("mouse: " + name + "-" + mouseOver);
 
             }
         
-            lastMouseOver = IsMouseOver;
+            _lastMouseOver = IsMouseOver;
 
         }
 
         public void Draw(GameTime gameTime) {
-            spriteBatch.Draw(Texture, Position, Color.White);
+            _spriteBatch.Draw(Texture, Position, Color.White);
         }
 
 

@@ -4,14 +4,14 @@ namespace MonoGame.Ruge.CardEngine {
     public class StackCrunch {
 
         // define the number of items in a stack before attempting to crunch
-        public int crunchItemMin { get; set; } = 10;
-        public int faceDownCrunch { get; set; }
-        public int faceUpCrunch { get; set; }
+        public int CrunchItemMin { get; set; } = 10;
+        public int FaceDownCrunch { get; set; }
+        public int FaceUpCrunch { get; set; }
 
         public StackCrunch(int stackOffset) {
 
-            faceDownCrunch = stackOffset/3;
-            faceUpCrunch = stackOffset/2;
+            FaceDownCrunch = stackOffset/3;
+            FaceUpCrunch = stackOffset/2;
 
         }
 

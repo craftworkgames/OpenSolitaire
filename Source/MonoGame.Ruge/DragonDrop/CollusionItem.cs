@@ -2,13 +2,13 @@
 
     public class CollusionItem {
 
-        public IDragonDropItem item;
+        public IDragonDropItem Item;
         public bool UnderMouse { get; set; } = false;
 
 
         public CollusionItem(IDragonDropItem item) {
 
-            this.item = item;
+            Item = item;
 
         }
 

@@ -16,38 +16,38 @@ namespace MonoGame.Ruge.CardEngine {
     public class Table {
 
         // Z-Index constants
-        protected const int ON_TOP = 1000;
+        protected const int OnTop = 1000;
         
-        protected int stackOffsetHorizontal, stackOffsetVertical;
-        protected Texture2D cardBack, slotTex;
-        protected SpriteBatch spriteBatch;
-        protected DragonDrop<IDragonDropItem> dragonDrop;
+        protected int StackOffsetHorizontal, StackOffsetVertical;
+        protected Texture2D CardBack, SlotTex;
+        protected SpriteBatch SpriteBatch;
+        protected DragonDrop<IDragonDropItem> DragonDrop;
         
-        public List<Stack> stacks = new List<Stack>();
+        public List<Stack> Stacks = new List<Stack>();
 
         public Table(SpriteBatch spriteBatch, DragonDrop<IDragonDropItem> dragonDrop, Texture2D cardBack, Texture2D slotTex, int stackOffsetH, int stackOffsetV) {
-            this.spriteBatch = spriteBatch;
-            this.dragonDrop = dragonDrop;
-            stackOffsetHorizontal = stackOffsetH;
-            stackOffsetVertical = stackOffsetV;
-            this.cardBack = cardBack;
-            this.slotTex = slotTex;
+            SpriteBatch = spriteBatch;
+            DragonDrop = dragonDrop;
+            StackOffsetHorizontal = stackOffsetH;
+            StackOffsetVertical = stackOffsetV;
+            CardBack = cardBack;
+            SlotTex = slotTex;
         }
 
 
-        public Stack AddStack(Slot slot, StackType type = StackType.undefined, StackMethod stackMethod = StackMethod.normal) {
+        public Stack AddStack(Slot slot, StackType type = StackType.Undefined, StackMethod stackMethod = StackMethod.Normal) {
 
-            var stack = new Stack(cardBack, slotTex, spriteBatch, stackOffsetHorizontal, stackOffsetVertical) {
-                slot = slot,
-                method = stackMethod,
-                type = type
+            var stack = new Stack(CardBack, SlotTex, SpriteBatch, StackOffsetHorizontal, StackOffsetVertical) {
+                Slot = slot,
+                Method = stackMethod,
+                Type = type
             };
 
-            slot.stack = stack;
+            slot.Stack = stack;
 
-            stacks.Add(stack);
+            Stacks.Add(stack);
 
-            dragonDrop.Add(slot);
+            DragonDrop.Add(slot);
 
             return stack;
 
@@ -55,10 +55,10 @@ namespace MonoGame.Ruge.CardEngine {
 
         public void AddStack(Stack stack) {
 
-            foreach (var card in stack.cards) card.stack = stack;
+            foreach (var card in stack.Cards) card.Stack = stack;
 
             stack.UpdatePositions();
-            stacks.Add(stack);
+            Stacks.Add(stack);
             
         }
         
@@ -78,9 +78,9 @@ namespace MonoGame.Ruge.CardEngine {
 
             Slot slot = null;
 
-            foreach (var stack in stacks) {
+            foreach (var stack in Stacks) {
 
-                if (stack.name == name) slot = stack.slot;
+                if (stack.Name == name) slot = stack.Slot;
 
             }
 
@@ -98,9 +98,9 @@ namespace MonoGame.Ruge.CardEngine {
 
             Stack foundStack = null;
 
-            foreach (var stack in stacks) {
+            foreach (var stack in Stacks) {
 
-                if (stack.name == name) foundStack = stack;
+                if (stack.Name == name) foundStack = stack;
 
             }
 
@@ -121,10 +121,10 @@ namespace MonoGame.Ruge.CardEngine {
 
 
         public void Update(GameTime gameTime) {
-            foreach (var stack in stacks) stack.Update(gameTime);
+            foreach (var stack in Stacks) stack.Update(gameTime);
 
             // fixes the z-ordering stuff
-            var items = dragonDrop.dragItems.OrderBy(z => z.ZIndex).ToList();
+            var items = DragonDrop.DragItems.OrderBy(z => z.ZIndex).ToList();
             foreach (var item in items) {
                 var type = item.GetType();
                 if (type == typeof(Card)) item.Update(gameTime);
@@ -133,10 +133,10 @@ namespace MonoGame.Ruge.CardEngine {
 
         public void Draw(GameTime gameTime) {
             
-            foreach (var stack in stacks) stack.Draw(gameTime);
+            foreach (var stack in Stacks) stack.Draw(gameTime);
             
             // fixes the z-ordering stuff
-            var items = dragonDrop.dragItems.OrderBy(z => z.ZIndex).ToList();
+            var items = DragonDrop.DragItems.OrderBy(z => z.ZIndex).ToList();
             foreach (var item in items) {
                 var type = item.GetType();
                 if (type == typeof(Card)) item.Draw(gameTime);

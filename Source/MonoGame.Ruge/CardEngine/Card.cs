@@ -15,22 +15,22 @@ namespace MonoGame.Ruge.CardEngine {
 
     public enum Suit {
 
-        clubs,
-        hearts,
-        diamonds,
-        spades
+        Clubs,
+        Hearts,
+        Diamonds,
+        Spades
 
     };
 
     public enum CardColor {
 
-        red,
-        black
+        Red,
+        Black
 
     }
 
     public enum Rank {
-        _A,
+        A,
         _2,
         _3,
         _4,
@@ -40,17 +40,17 @@ namespace MonoGame.Ruge.CardEngine {
         _8,
         _9,
         _10,
-        _J,
-        _Q,
-        _K
+        J,
+        Q,
+        K
     }
 
     public class Card : IDragonDropItem {
 
         // Z-Index constants
-        protected const int ON_TOP = 1000;
+        protected const int OnTop = 1000;
 
-        private readonly SpriteBatch spriteBatch;
+        private readonly SpriteBatch _spriteBatch;
 
         private Vector2 _position;
         public Vector2 Position {
@@ -61,10 +61,10 @@ namespace MonoGame.Ruge.CardEngine {
                 
                 if (Child != null) {
                     
-                    Vector2 pos = new Vector2(_position.X + stack.offset.X, _position.Y + stack.offset.Y);
+                    Vector2 pos = new Vector2(_position.X + Stack.Offset.X, _position.Y + Stack.Offset.Y);
 
                     Child.Position = pos;
-                    Child.snapPosition = pos;
+                    Child.SnapPosition = pos;
                     Child.ZIndex = ZIndex + 1;
                     
                 }
@@ -72,47 +72,47 @@ namespace MonoGame.Ruge.CardEngine {
             }
         }
         
-        public Vector2 snapPosition { get; set; }
+        public Vector2 SnapPosition { get; set; }
         public Card Child { get; set; } = null;
 
         public Rectangle Border => new Rectangle((int) Position.X, (int) Position.Y, Texture.Width, Texture.Height);
 
-        protected Texture2D cardBack, texture;
+        protected Texture2D CardBack, texture;
 
-        public Texture2D Texture => isFaceUp ? texture : cardBack;
+        public Texture2D Texture => IsFaceUp ? texture : CardBack;
         public void SetTexture(Texture2D newTexture) => texture = newTexture;
 
-        public Stack stack { get; set; }
+        public Stack Stack { get; set; }
         public int ZIndex { get; set; } = 1;
 
-        public bool isSnapAnimating = false;
-        public bool snap = true;
-        public float snapSpeed = 25f;
+        public bool IsSnapAnimating = false;
+        public bool Snap = true;
+        public float SnapSpeed = 25f;
 
-        public CardColor color {
+        public CardColor Color {
             get {
-                if (suit.Equals(Suit.hearts) || suit.Equals(Suit.diamonds)) return CardColor.red;
-                else return CardColor.black;
+                if (Suit.Equals(Suit.Hearts) || Suit.Equals(Suit.Diamonds)) return CardColor.Red;
+                else return CardColor.Black;
             }
         }
 
-        public Rank rank;
-        public Suit suit;
+        public Rank Rank;
+        public Suit Suit;
 
-        public bool isFaceUp = false;
+        public bool IsFaceUp = false;
 
         public Card(Rank rank, Suit suit, Texture2D cardBack, SpriteBatch spriteBatch) {
 
-            this.spriteBatch = spriteBatch;
-            this.rank = rank;
-            this.suit = suit;
-            this.cardBack = cardBack;
+            _spriteBatch = spriteBatch;
+            Rank = rank;
+            Suit = suit;
+            CardBack = cardBack;
 
         }
 
 
-        public void flipCard() {
-            isFaceUp = !isFaceUp;
+        public void FlipCard() {
+            IsFaceUp = !IsFaceUp;
         }
 
 
@@ -140,28 +140,28 @@ namespace MonoGame.Ruge.CardEngine {
                 var fixChild = Child;
 
                 while (fixChild != null) {
-                    fixChild.ZIndex += ON_TOP;
+                    fixChild.ZIndex += OnTop;
                     fixChild = fixChild.Child;
                 }
             }
             
-            if (isSnapAnimating) {
+            if (IsSnapAnimating) {
 
-                isSnapAnimating = !SnapAnimation();
+                IsSnapAnimating = !SnapAnimation();
 
             }
 
         }
 
         public void Draw(GameTime gameTime) {
-            spriteBatch.Draw(Texture, Position, Color.White);
+            _spriteBatch.Draw(Texture, Position, Microsoft.Xna.Framework.Color.White);
         }
 
         #endregion
 
         public void MoveToEmptyStack(Stack newStack) {
 
-            if (newStack.Count == 0) newStack.addCard(this, true);
+            if (newStack.Count == 0) newStack.AddCard(this, true);
 
         }
 
@@ -170,7 +170,7 @@ namespace MonoGame.Ruge.CardEngine {
         public void SetParent(Card parent) {
             
             parent.Child = this;
-            parent.stack.addCard(this, true);
+            parent.Stack.AddCard(this, true);
 
         }
 
@@ -186,23 +186,23 @@ namespace MonoGame.Ruge.CardEngine {
 
             var pos = Position;
 
-            float distance = (float)Math.Sqrt(Math.Pow(snapPosition.X - pos.X, 2) + (float)Math.Pow(snapPosition.Y - pos.Y, 2));
-            float directionX = (snapPosition.X - pos.X) / distance;
-            float directionY = (snapPosition.Y - pos.Y) / distance;
+            float distance = (float)Math.Sqrt(Math.Pow(SnapPosition.X - pos.X, 2) + (float)Math.Pow(SnapPosition.Y - pos.Y, 2));
+            float directionX = (SnapPosition.X - pos.X) / distance;
+            float directionY = (SnapPosition.Y - pos.Y) / distance;
 
-            pos.X += directionX * snapSpeed;
-            pos.Y += directionY * snapSpeed;
+            pos.X += directionX * SnapSpeed;
+            pos.Y += directionY * SnapSpeed;
 
 
             if (Math.Sqrt(Math.Pow(pos.X - Position.X, 2) + Math.Pow(pos.Y - Position.Y, 2)) >= distance) {
 
-                Position = snapPosition;
+                Position = SnapPosition;
 
                 backAtOrigin = true;
 
-                ZIndex -= ON_TOP;
+                ZIndex -= OnTop;
 
-                if (stack.crunchStacks) stack.UpdatePositions();
+                if (Stack.CrunchStacks) Stack.UpdatePositions();
 
             }
             else Position = pos;
@@ -223,7 +223,7 @@ namespace MonoGame.Ruge.CardEngine {
             if (IsDraggable) {
                 IsSelected = true;
             }
-            ZIndex += ON_TOP;
+            ZIndex += OnTop;
 
             Selected?.Invoke(this, EventArgs.Empty);
         }
@@ -236,7 +236,7 @@ namespace MonoGame.Ruge.CardEngine {
 
             IsSelected = false;
 
-            if (Position != snapPosition) isSnapAnimating = true;
+            if (Position != SnapPosition) IsSnapAnimating = true;
 
             Deselected?.Invoke(this, EventArgs.Empty);
 
@@ -247,7 +247,7 @@ namespace MonoGame.Ruge.CardEngine {
 
         public void OnCollusion(IDragonDropItem item) {
 
-            var e = new CollusionEvent {item = item};
+            var e = new CollusionEvent {Item = item};
 
             Collusion?.Invoke(this, e);
 
@@ -255,7 +255,7 @@ namespace MonoGame.Ruge.CardEngine {
 
         public class CollusionEvent : EventArgs {
 
-            public IDragonDropItem item { get; set; }
+            public IDragonDropItem Item { get; set; }
 
         }
 

@@ -15,14 +15,14 @@ using MonoGame.Ruge.ViewportAdapters;
 namespace MonoGame.Ruge.DragonDrop {
 
     public class DragonDrop<T> : DrawableGameComponent where T : IDragonDropItem {
+        private MouseState _oldMouse;
+        private MouseState _currentMouse;
 
-        MouseState oldMouse, currentMouse;
+        public readonly ViewportAdapter Viewport;
 
-        public readonly ViewportAdapter viewport;
-
-        public T selectedItem;
-        public List<T> dragItems;
-        public List<T> mouseItems;
+        public T SelectedItem;
+        public List<T> DragItems;
+        public List<T> MouseItems;
 
 
         /// <summary>
@@ -32,30 +32,30 @@ namespace MonoGame.Ruge.DragonDrop {
         /// <param name="sb"></param>
         /// <param name="vp"></param>
         public DragonDrop(Game game, ViewportAdapter vp) : base(game) {
-            viewport = vp;
-            selectedItem = default(T);
-            dragItems = new List<T>();
-            mouseItems = new List<T>();
+            Viewport = vp;
+            SelectedItem = default(T);
+            DragItems = new List<T>();
+            MouseItems = new List<T>();
         }
 
         public void Add(T item) {
-            dragItems.Add(item);
+            DragItems.Add(item);
         }
-        public void Remove(T item) { dragItems.Remove(item); }
+        public void Remove(T item) { DragItems.Remove(item); }
 
         public void Clear() {
-            selectedItem = default(T);
-            dragItems.Clear();
+            SelectedItem = default(T);
+            DragItems.Clear();
         }
 
-        private bool click => currentMouse.LeftButton == ButtonState.Pressed && oldMouse.LeftButton == ButtonState.Released;
-        private bool unClick => currentMouse.LeftButton == ButtonState.Released && oldMouse.LeftButton == ButtonState.Pressed;
-        private bool drag => currentMouse.LeftButton == ButtonState.Pressed;
+        private bool Click => _currentMouse.LeftButton == ButtonState.Pressed && _oldMouse.LeftButton == ButtonState.Released;
+        private bool UnClick => _currentMouse.LeftButton == ButtonState.Released && _oldMouse.LeftButton == ButtonState.Pressed;
+        private bool Drag => _currentMouse.LeftButton == ButtonState.Pressed;
 
         private Vector2 CurrentMouse {
             get {
 
-                var point = viewport.PointToScreen(currentMouse.X, currentMouse.Y);
+                var point = Viewport.PointToScreen(_currentMouse.X, _currentMouse.Y);
 
                 return new Vector2(point.X, point.Y);
 
@@ -65,7 +65,7 @@ namespace MonoGame.Ruge.DragonDrop {
         public Vector2 OldMouse {
             get {
 
-                var point = viewport.PointToScreen(oldMouse.X, oldMouse.Y);
+                var point = Viewport.PointToScreen(_oldMouse.X, _oldMouse.Y);
 
                 return new Vector2(point.X, point.Y);
 
@@ -77,17 +77,17 @@ namespace MonoGame.Ruge.DragonDrop {
 
         private T GetCollusionItem() {
 
-            var items = dragItems.OrderByDescending(z => z.ZIndex).ToList();
+            var items = DragItems.OrderByDescending(z => z.ZIndex).ToList();
             foreach (var item in items) {
 
-                if (item.Contains(CurrentMouse) && !Equals(selectedItem, item)) return item;
+                if (item.Contains(CurrentMouse) && !Equals(SelectedItem, item)) return item;
 
             }
          
             // if it doesn't contain the current mouse, run again to see if it intersects
             foreach (var item in items) {
 
-                if (item.Border.Intersects(selectedItem.Border) && !Equals(selectedItem, item)) return item;
+                if (item.Border.Intersects(SelectedItem.Border) && !Equals(SelectedItem, item)) return item;
 
             }
             return default(T);
@@ -96,7 +96,7 @@ namespace MonoGame.Ruge.DragonDrop {
 
         private T GetMouseHoverItem() {
 
-            var items = dragItems.OrderByDescending(z => z.ZIndex).ToList();
+            var items = DragItems.OrderByDescending(z => z.ZIndex).ToList();
 
             foreach (var item in items) {
 
@@ -111,28 +111,28 @@ namespace MonoGame.Ruge.DragonDrop {
         public override void Update(GameTime gameTime) {
 
 
-            currentMouse = Mouse.GetState();
+            _currentMouse = Mouse.GetState();
 
 
-            if (selectedItem != null) {
+            if (SelectedItem != null) {
 
-                if (selectedItem.IsSelected) {
+                if (SelectedItem.IsSelected) {
 
-                    if (drag) {
-                        selectedItem.Position += Movement;
-                        selectedItem.Update(gameTime);
+                    if (Drag) {
+                        SelectedItem.Position += Movement;
+                        SelectedItem.Update(gameTime);
                     }
-                    else if (unClick) {
+                    else if (UnClick) {
 
                         var collusionItem = GetCollusionItem();
 
                         if (collusionItem != null) {
-                            selectedItem.OnCollusion(collusionItem);
+                            SelectedItem.OnCollusion(collusionItem);
                             collusionItem.Update(gameTime);
                         }
 
-                        selectedItem.OnDeselected();
-                        selectedItem.Update(gameTime);
+                        SelectedItem.OnDeselected();
+                        SelectedItem.Update(gameTime);
 
                     }
                 }
@@ -140,7 +140,7 @@ namespace MonoGame.Ruge.DragonDrop {
             }
 
 
-            foreach (var item in dragItems) {
+            foreach (var item in DragItems) {
                 item.IsMouseOver = false;
                 item.Update(gameTime);
             }
@@ -151,9 +151,9 @@ namespace MonoGame.Ruge.DragonDrop {
 
                 hoverItem.IsMouseOver = true;
 
-                if (hoverItem.IsDraggable && click) {
-                    selectedItem = hoverItem;
-                    selectedItem.OnSelected();
+                if (hoverItem.IsDraggable && Click) {
+                    SelectedItem = hoverItem;
+                    SelectedItem.OnSelected();
                 }
 
                 hoverItem.Update(gameTime);
@@ -161,7 +161,7 @@ namespace MonoGame.Ruge.DragonDrop {
             }
 
 
-            oldMouse = currentMouse;
+            _oldMouse = _currentMouse;
 
         }
 

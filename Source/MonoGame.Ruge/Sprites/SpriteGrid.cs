@@ -8,42 +8,41 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MonoGame.Ruge.Sprites {
+    internal class SpriteGrid {
 
-    class SpriteGrid {
-
-        private int rows, cols, width, height;
-        private Vector2 offset;
+        private int _rows, _cols, _width, _height;
+        private Vector2 _offset;
 
         public SpriteGrid(int rows, int cols, int width, int height, Vector2 offset) {
 
-            this.rows = rows;
-            this.cols = cols;
-            this.width = width;
-            this.height = height;
-            this.offset = offset;
+            _rows = rows;
+            _cols = cols;
+            _width = width;
+            _height = height;
+            _offset = offset;
 
         }
 
         public SpriteGrid(int rows, int cols, int width, int height) : this(rows, cols, width, height, Vector2.Zero) {}
 
             
-        public Rectangle getRectangle(Vector2 vector) {
+        public Rectangle GetRectangle(Vector2 vector) {
 
-            int x = (int)vector.X * width;
-            int y = (int)vector.Y * height;
+            int x = (int)vector.X * _width;
+            int y = (int)vector.Y * _height;
 
-            x += (int)offset.X;
-            y += (int)offset.Y;
+            x += (int)_offset.X;
+            y += (int)_offset.Y;
 
-            Rectangle rect = new Rectangle(x, y, width, height);
+            Rectangle rect = new Rectangle(x, y, _width, _height);
             return rect;
 
         }
 
-        public Rectangle getRectangle(int col, int row) {
+        public Rectangle GetRectangle(int col, int row) {
 
             Vector2 vect = new Vector2(col, row);
-            Rectangle rect = getRectangle(vect);
+            Rectangle rect = GetRectangle(vect);
             return rect;
 
         }

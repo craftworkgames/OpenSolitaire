@@ -9,61 +9,59 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 namespace MonoGame.Ruge.Sprites {
-
-    class SpriteAnimator {
-
-        SpriteGrid spriteGrid;
-        List<Vector2> queue;
-        Vector2 idle;
-        int playIndex = 0;
-        bool loop;
+    internal class SpriteAnimator {
+        private SpriteGrid _spriteGrid;
+        private List<Vector2> _queue;
+        private Vector2 _idle;
+        private int _playIndex = 0;
+        private bool _loop;
 
         public SpriteAnimator(Vector2 idle, SpriteGrid spriteGrid, bool loop = true) {
 
-            this.idle = idle;
-            this.spriteGrid = spriteGrid;
-            this.loop = loop;
-            queue = new List<Vector2>();
+            _idle = idle;
+            _spriteGrid = spriteGrid;
+            _loop = loop;
+            _queue = new List<Vector2>();
 
         }
 
-        public void Add(Vector2 vector) { queue.Add(vector); }
+        public void Add(Vector2 vector) { _queue.Add(vector); }
 
-        public void Clear() { queue.Clear();  }
+        public void Clear() { _queue.Clear();  }
 
 
-        public Rectangle play() {
+        public Rectangle Play() {
 
-            Rectangle rect = spriteGrid.getRectangle(idle);
+            Rectangle rect = _spriteGrid.GetRectangle(_idle);
 
-            if (queue.Count > 0) { 
+            if (_queue.Count > 0) { 
 
                 // check if it is out of range
-                if (playIndex == queue.Count) {
+                if (_playIndex == _queue.Count) {
 
-                    if (!loop) { 
-                        queue.Clear();
+                    if (!_loop) { 
+                        _queue.Clear();
                         return rect;
                     }
                     else {
-                        playIndex = 0;
+                        _playIndex = 0;
                     }
 
                 }
             
-                Vector2 current = queue[playIndex];
-                rect = spriteGrid.getRectangle(current);
+                Vector2 current = _queue[_playIndex];
+                rect = _spriteGrid.GetRectangle(current);
             
-                playIndex++;
+                _playIndex++;
             }
 
             return rect;
 
         }
 
-        public Rectangle stop() {
+        public Rectangle Stop() {
 
-            return spriteGrid.getRectangle(idle);
+            return _spriteGrid.GetRectangle(_idle);
 
         }
         

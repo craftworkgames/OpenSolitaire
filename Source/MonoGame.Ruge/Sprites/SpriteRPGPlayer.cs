@@ -8,23 +8,23 @@ using Microsoft.Xna.Framework;
 
 namespace MonoGame.Ruge.Sprites {
 
-    public class SpriteRPGPlayer {
+    public class SpriteRpgPlayer {
         
-        private int cols, width, height;
-        private SpriteAnimator animateLeft, animateRight, animateUp, animateDown;
-        public Rectangle rect;
-        public Vector2 position, origin;
-        public int index;
+        private int _cols, _width, _height;
+        private SpriteAnimator _animateLeft, _animateRight, _animateUp, _animateDown;
+        public Rectangle Rect;
+        public Vector2 Position, Origin;
+        public int Index;
 
         // this code assumes you're using a 3x4 or 4x4 type of grid layout
         // common with RPG Maker character tile sets.  
         
-        public SpriteRPGPlayer(int cols, int width, int height, Vector2 offset, int playerNum = 0) {
+        public SpriteRpgPlayer(int cols, int width, int height, Vector2 offset, int playerNum = 0) {
 
-            this.cols = cols;
-            this.width = width;
-            this.height = height;
-            index = playerNum;
+            _cols = cols;
+            _width = width;
+            _height = height;
+            Index = playerNum;
 
             Vector2 idle;
             
@@ -34,37 +34,37 @@ namespace MonoGame.Ruge.Sprites {
 
 
             idle = new Vector2(cols - 1, 0);
-            animateDown = new SpriteAnimator(idle, grid);
+            _animateDown = new SpriteAnimator(idle, grid);
             idle = new Vector2(cols - 1, 1);
-            animateLeft = new SpriteAnimator(idle, grid);
+            _animateLeft = new SpriteAnimator(idle, grid);
             idle = new Vector2(cols - 1, 2);
-            animateRight = new SpriteAnimator(idle, grid);
+            _animateRight = new SpriteAnimator(idle, grid);
             idle = new Vector2(cols - 1, 3);
-            animateUp = new SpriteAnimator(idle, grid);
+            _animateUp = new SpriteAnimator(idle, grid);
 
 
             for (int i = 0; i < cols; i++) {
 
-                animateDown.Add(new Vector2(i, 0));
-                animateLeft.Add(new Vector2(i, 1));
-                animateRight.Add(new Vector2(i, 2));
-                animateUp.Add(new Vector2(i, 3));
+                _animateDown.Add(new Vector2(i, 0));
+                _animateLeft.Add(new Vector2(i, 1));
+                _animateRight.Add(new Vector2(i, 2));
+                _animateUp.Add(new Vector2(i, 3));
 
             }
 
-            rect = grid.getRectangle(new Vector2(cols - 1, 0));
+            Rect = grid.GetRectangle(new Vector2(cols - 1, 0));
 
-            origin = new Vector2(width / 2.0f, height / 2.0f);
+            Origin = new Vector2(width / 2.0f, height / 2.0f);
             
         }
 
-        public SpriteRPGPlayer(int cols, int width, int height) : this(cols, width, height, Vector2.Zero) { }
-        public SpriteRPGPlayer(int cols, int width, int height, int playerNum) : this(cols, width, height, Vector2.Zero, playerNum) { }
+        public SpriteRpgPlayer(int cols, int width, int height) : this(cols, width, height, Vector2.Zero) { }
+        public SpriteRpgPlayer(int cols, int width, int height, int playerNum) : this(cols, width, height, Vector2.Zero, playerNum) { }
 
-        public void moveDown()  { rect = animateDown.play(); }
-        public void moveUp()    { rect = animateUp.play(); }
-        public void moveLeft()  { rect = animateLeft.play(); }
-        public void moveRight() { rect = animateRight.play(); }
+        public void MoveDown()  { Rect = _animateDown.Play(); }
+        public void MoveUp()    { Rect = _animateUp.Play(); }
+        public void MoveLeft()  { Rect = _animateLeft.Play(); }
+        public void MoveRight() { Rect = _animateRight.Play(); }
 
     }
 

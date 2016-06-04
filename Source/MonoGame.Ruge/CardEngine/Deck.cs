@@ -17,22 +17,22 @@ namespace MonoGame.Ruge.CardEngine {
         public Deck(Texture2D cardBack, Texture2D slotTex, SpriteBatch spriteBatch, int stackOffsetH, int stackOffsetV) 
             : base(cardBack, slotTex, spriteBatch, stackOffsetH, stackOffsetV) {
 
-            type = StackType.deck;
+            Type = StackType.Deck;
 
         }
 
         /// <summary>
         /// populate your deck with a typical set of cards
         /// </summary>
-        public void freshDeck() {
+        public void FreshDeck() {
 
-            cards.Clear();
+            Cards.Clear();
 
             foreach (Suit mySuit in Enum.GetValues(typeof(Suit))) {
 
                 foreach (Rank myRank in Enum.GetValues(typeof(Rank))) {
 
-                    cards.Add(new Card(myRank, mySuit, cardBack, spriteBatch));
+                    Cards.Add(new Card(myRank, mySuit, CardBack, SpriteBatch));
 
                 }
 
@@ -44,18 +44,18 @@ namespace MonoGame.Ruge.CardEngine {
         /// makes a smaller random deck for testing
         /// </summary>
         /// <param name="numCards"></param>
-        public void testDeck(int numCards) {
+        public void TestDeck(int numCards) {
 
-            cards.Clear();
+            Cards.Clear();
 
-            var subDeck = new Deck(cardBack, slot.Texture, spriteBatch, stackOffsetHorizontal, stackOffsetVertical);
-            subDeck.freshDeck();
-            subDeck.shuffle();
+            var subDeck = new Deck(CardBack, Slot.Texture, SpriteBatch, StackOffsetHorizontal, StackOffsetVertical);
+            subDeck.FreshDeck();
+            subDeck.Shuffle();
 
             if (numCards <= subDeck.Count) {
 
                 for (int i = 0; i < numCards; i++) {
-                    cards.Add(subDeck.drawCard());
+                    Cards.Add(subDeck.DrawCard());
                 }
 
             }
